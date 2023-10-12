@@ -53,15 +53,15 @@ tl.from(".kittens ",{
     y:50,repeat:10,opacity:0,yoyo:true
 });
 
-gsap.to(" #fleft",{
+// gsap.to(" #fleft",{
     
-    scrollTrigger:{
-        trigger:"#fleft",start:"top top%",bottom:"bottom bottom%" ,pin:true,endTrigger:" .elem1",scrub:1 ,
-    },
-    y:"-100%",
-    ease:Power1,
-    }
-)     
+//     scrollTrigger:{
+//         trigger:"#fleft",start:"top top%",bottom:"bottom bottom%" ,pin:true,endTrigger:" .elem1",scrub:1 ,
+//     },
+//     y:"-100%",
+//     ease:Power1,
+//     }
+// )     
 gsap.to("#slides",{
     transform:"translateX(-50%)",
     ease:Power1,

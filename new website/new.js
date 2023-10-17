@@ -1,3 +1,60 @@
+function loco(){
+    gsap.registerPlugin(ScrollTrigger);
+
+// Using Locomotive Scroll from Locomotive https://github.com/locomotivemtl/locomotive-scroll
+
+const locoScroll = new LocomotiveScroll({
+  el: document.querySelector("#main"),
+  smooth: true
+});
+// each time Locomotive Scroll updates, tell ScrollTrigger to update too (sync positioning)
+locoScroll.on("scroll", ScrollTrigger.update);
+
+// tell ScrollTrigger to use these proxy methods for the "#main" element since Locomotive Scroll is hijacking things
+ScrollTrigger.scrollerProxy("#main", {
+  scrollTop(value) {
+    return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
+  }, // we don't have to define a scrollLeft because we're only scrolling vertically.
+  getBoundingClientRect() {
+    return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
+  },
+  // LocomotiveScroll handles things completely differently on mobile devices - it doesn't even transform the container at all! So to get the correct behavior and avoid jitters, we should pin things with position: fixed on mobile. We sense it by checking to see if there's a transform applied to the container (the LocomotiveScroll-controlled element).
+  pinType: document.querySelector("#main").style.transform ? "transform" : "fixed"
+});
+
+
+gsap.to(" .adultcats",{
+    
+    scrollTrigger:{
+        trigger:".ff ",start:"top top",bottom:"bottom bottom" ,scrub:true,pin:true, scroller: "#main",
+    },
+    transform:"translateY(-85%)",
+    behavior: 'smooth',
+    duration:50,
+    transformOrigin: "top bottom", 
+    ease: "none"
+    }
+)    
+gsap.to("#slides",{
+    transform:"translateX(-50%)",
+    ease:Power1,
+    behavior: 'smooth',transformOrigin: "left center", 
+    ease: "none",
+    duration:3,
+    scrollTrigger:{
+        trigger:"#slides",scroller:"body",start:"top 20%",bottom:"bottom 90%" ,scrub:1 ,pin:true, scroller: "#main",
+    }}
+)
+
+// each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
+ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+
+// after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+ScrollTrigger.refresh();
+
+}
+loco()
+
 const btns = document.querySelectorAll(".magnet");
 btns.forEach((btn) => {
     btn.addEventListener("mousemove", (e) => {
@@ -12,32 +69,14 @@ btns.forEach((btn) => {
         btn.style.transform = "translate(0px,0px)";
     });
 });
-const closebtndrpmenu = () => {
-    const b = document.querySelector(".dropmenubox").classList;
-    b.remove("active-popup");
-};
-const menu = () => {
-    const a = document.querySelector(".dropmenubox").classList;
-    a.toggle("active-popup");
-};
-const crsr = document.querySelector(".cursor");
-document.addEventListener("mousemove", (dets) => {
-    crsr.style.left = dets.x + "px";
-    crsr.style.top = dets.y + "px";
-    crsr.style.display = "block";
 
 
-    function mouseStopped() {
-        crsr.style.display = "none";
-    }
-
-    timeout = setTimeout(mouseStopped, 1000);
-    clearTimeout(timeout);
-});
-document.addEventListener("mouseout", () => {
-    crsr.style.display = "none";
-});
 const tl=gsap.timeline();
+tl.to("#loader",{
+    y:'-1000vh',
+    duration:1.5,
+
+});
 
 tl.from("#nav ",{
     y:-50,opacity:0
@@ -50,22 +89,8 @@ tl.from(".headings h1",{
     opacity:0
 });
 tl.from(".kittens ",{
-    y:50,repeat:10,opacity:0,yoyo:true
+    y:50,opacity:0,
 });
 
-// gsap.to(" #fleft",{
-    
-//     scrollTrigger:{
-//         trigger:"#fleft",start:"top top%",bottom:"bottom bottom%" ,pin:true,endTrigger:" .elem1",scrub:1 ,
-//     },
-//     y:"-100%",
-//     ease:Power1,
-//     }
-// )     
-gsap.to("#slides",{
-    transform:"translateX(-50%)",
-    ease:Power1,
-    scrollTrigger:{
-        trigger:"#slides",scroller:"body",start:"top 30%",bottom:"top 70%%" ,scrub:1 ,pin:true,
-    }}
-)
+
+

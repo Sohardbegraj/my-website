@@ -31,8 +31,8 @@ gsap.to(" .adultcats",{
     transform:"translateY(-85%)",
     behavior: 'smooth',
     duration:50,
-    transformOrigin: "top bottom", 
-    ease: "none"
+    transformOrigin: "top center", 
+    ease: "none",
     }
 )    
 gsap.to("#slides",{
